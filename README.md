@@ -1,39 +1,54 @@
-# Financial Data Broker Map
+# Real Rails: Intelligence Dashboard & Data Sovereignty Map 
+## Open Banking Data Lineage (PoC #20) & Infrastructure Intelligence
 
-**Real Rails Intelligence Library · PoC #20 · Open Banking Rail**
+A production-grade, full-stack administrative dashboard designed under strict **Obsidian Black (`#030712`)** design parameters. This application serves a dual architectural purpose: visualizing complex transactional data sovereignty lineage paths within Open Banking frameworks, and tracking geographically-dispersed energy infrastructure assets in real time.
 
-![Archetype Relational](https://img.shields.io/badge/Archetype-Relational-blue)
-![Rail Open Banking](https://img.shields.io/badge/Rail-Open_Banking-cyan)
-![VAR PASS](https://img.shields.io/badge/VAR-PASS-brightgreen)
-![Stack Next.js 16 + FastAPI](https://img.shields.io/badge/Stack-Next.js_16_%2B_FastAPI-black)
+---
 
-A Data Sovereignty Tool designed to map the complex lineage of financial data. Most users believe their financial data stays between them and their bank. In reality, once consent is granted, that data enters a complex web of Aggregators, Brokers, and Resellers. This dashboard visualizes the data sprawl, tracking it from the source through to third-party endpoints.
+## 🚀 Key System Features & Code Architecture
 
-## What It Does
-The dashboard ingests a synthetic network of Open Banking permissions and renders an interactive **React Flow** relational graph following strict Obsidian Black (#030712) guidelines.
+### 1. Spec-Driven Core API Layer (`FastAPI` & `Pydantic`)
+Powered by a high-performance Python backend managing structure validation and topological data serialization.
+- **Dynamic Ingestion Endpoint:** Exposes a validated JSON payload via the `/api/lineage` route.
+- **Strict Schema Enforcement:** Uses typed Pydantic models (`Node`, `Edge`, and `GraphData`) to categorize data entities into 5 industry segments (`Bank`, `Aggregator`, `App`, `Broker`, `Bureau`) with corresponding compliance risk tags (`Low`, `Medium`, `High`).
+- **Resilient Fallback Middleware:** The React frontend automatically intercepts API connection timeouts or offline microservices, seamlessly downgrading to an internal static **Mock Data Engine** to prevent application crashes.
 
-- **The 70% Visualization Stage:** Displays the data hops from Banks (Source of Truth) → Aggregators (Delegated Access) → Apps/Brokers (Anonymized Tracking). High-risk permission paths (e.g., data resale) are visually highlighted.
-- **The 30% Intelligence Sidebar:** Clicking any node in the graph triggers a "Handshake" event, dynamically populating the sidebar's Node Insights section with the entity's Risk Level, Access Scope, and necessary compliance warnings (CFPB Section 1033 / GDPR).
+### 2. Relational Network Flow Layer (`React Flow`)
+Occupies 70% of the primary dashboard canvas, rendering clear data provenance tracking.
+- **Custom Backdrop Node Components:** Uses customized HTML injection handles (`#38BDF8`) wrapped in Tailwind glassmorphism effects to represent individual financial groups.
+- **Live Risk Animation Vectoring:** Connections linked to `High Risk` secondary markets (such as data resellers or aggregators with excessive privilege scopes) are programmatically highlighted with **animated red connection vectors (`#ef4444`)** to alert compliance teams.
+- **30% Telemetry Sidebar:** Features a sticky metric tracker indexing active node counts, consumer rights insights (CFPB Section 1033 / GDPR mandates), and dynamically mounts detailed risk logs whenever an operator clicks a node.
 
-## Local Execution Instructions
-This project requires Node.js (v18+) and Python (v3.10+).
+### 3. Geospatial Telemetry Visualizer (`React Leaflet`)
+An enterprise-grade geographic map configured for zero-margin custom container overlays.
+- **Adaptive Base Tiles:** Integrates a dark-mode geographical template leveraging CartoDB (`dark_all`).
+- **Color-Coded Status Pins:** Uses a programmatic Leaflet `divIcon` layer to render asset markers based on active capacity and real-time operational state:
+  - 🟢 **Green:** Renewable Energy Assets
+  - 🟣 **Indigo:** Carbon-intensive Energy (Coal, Gas)
+  - 🟡 **Yellow:** Assets undergoing System Maintenance
+  - 🔴 **Red:** Critical Offline Infrastructure
+- **Automated Viewports:** Features a custom `MapUpdater` child hook utilizing `latLngBounds` to automatically refocus and zoom the global canvas based on injected datasets.
 
-1. **Start the FastAPI Backend:**
-   Open a terminal in the root directory and run:
-   ```powershell
-   .\run_backend.ps1
-   ```
-   *The API will run on http://127.0.0.1:8000*
+---
 
-2. **Start the Next.js Frontend:**
-   Open a second terminal in the root directory and run:
-   ```powershell
-   .\run_frontend.ps1
-   ```
-   *The dashboard will run on http://localhost:3000*
+## 🛠️ Complete Tech Stack & Dependencies
 
-## Handover Artifacts Included
-- `repomix-output.xml`: The complete unified codebase.
-- `Visualization_Audit_Report.md`: Passed visual compliance audit.
-- `Functional_UAT.csv`: Passed functional interaction test cases.
-# POC-20-Financial-Data-Broker-Map---hashidemuhammed
+| Ecosystem | Technology / Package | Implementation Scope |
+| :--- | :--- | :--- |
+| **Backend Core** | Python 3.10+, FastAPI, Uvicorn | Routing, CORS Policy, JSON Serialization |
+| **Data Logic** | Pydantic, pandas, networkx | Schema Guards, Advanced Relational Graph Mapping |
+| **Frontend Core** | Next.js 16 (TypeScript), React | Root Layouts, Global Context Hooks |
+| **Graph UI** | React Flow | Animated Node Connections & Lineage Graphs |
+| **Map UI** | Leaflet, React Leaflet | Dark-theme Spatial Visualizations, Bounds Updaters |
+| **Styling & Assets** | Tailwind CSS, Lucide React | Glassmorphic UI Components, Performance Vector Icons |
+
+---
+
+## ⚙️ Local Setup & Workspace Configuration
+
+Ensure **Python 3.10+** and **Node.js (v18+)** are initialized on your native system architecture before running configurations.
+
+### 1. Repository Cloning
+```bash
+git clone <repository-url>
+cd real-rails
