@@ -24,3 +24,19 @@ body {
 .react-flow__attribution {
   display: none;
 }
+
+/* Leaflet Customizations for Dark Theme */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: inherit !important;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  padding: 0 !important;
+}
