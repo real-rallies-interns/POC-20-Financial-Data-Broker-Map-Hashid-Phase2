@@ -30,8 +30,7 @@ class GraphData(BaseModel):
     nodes: List[Node]
     edges: List[Edge]
 
-@app.get("/api/lineage", response_model=GraphData)
-def get_data_lineage():
+def generate_synthetic_lineage() -> dict:
     nodes = [
         {"id": "bank_wells", "label": "Wells Fargo", "type": "Bank", "risk_level": "Low"},
         {"id": "bank_chase", "label": "Chase Bank", "type": "Bank", "risk_level": "Low"},
@@ -57,3 +56,7 @@ def get_data_lineage():
     ]
     
     return {"nodes": nodes, "edges": edges}
+
+@app.get("/api/lineage", response_model=GraphData)
+def get_data_lineage():
+    return generate_synthetic_lineage()
