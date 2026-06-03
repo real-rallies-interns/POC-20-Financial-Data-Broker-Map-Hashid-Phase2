@@ -10,6 +10,7 @@ A production-grade, full-stack administrative dashboard designed under strict **
 ### 1. Spec-Driven Core API Layer (`FastAPI` & `Pydantic`)
 Powered by a high-performance Python backend managing structure validation and topological data serialization.
 - **Dynamic Ingestion Endpoint:** Exposes a validated JSON payload via the `/api/lineage` route.
+- **Synthetic Data Pipeline:** The backend data pipeline has been refactored to replace direct hardcoding with a dedicated `generate_synthetic_lineage()` data matrix.
 - **Strict Schema Enforcement:** Uses typed Pydantic models (`Node`, `Edge`, and `GraphData`) to categorize data entities into 5 industry segments (`Bank`, `Aggregator`, `App`, `Broker`, `Bureau`) with corresponding compliance risk tags (`Low`, `Medium`, `High`).
 - **Resilient Fallback Middleware:** The React frontend automatically intercepts API connection timeouts or offline microservices, seamlessly downgrading to an internal static **Mock Data Engine** to prevent application crashes.
 
