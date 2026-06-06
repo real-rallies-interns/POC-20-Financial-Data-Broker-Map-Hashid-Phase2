@@ -11,8 +11,6 @@ services:
     plan: free
     envVars:
       - key: CORS_ORIGINS
-        # Replace this value with your deployed frontend URL once available,
-        # e.g. https://real-rails-frontend.onrender.com
         value: https://real-rails-frontend.onrender.com
     healthCheckPath: /api/lineage
 
@@ -23,13 +21,11 @@ services:
     name: real-rails-frontend
     runtime: node
     rootDir: frontend
-    buildCommand: npm install --legacy-peer-deps && npm run build
+    buildCommand: npm ci && npm run build
     startCommand: npm run start
     plan: free
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        # Replace this value with your deployed backend URL once available,
-        # e.g. https://real-rails-backend.onrender.com
         value: https://real-rails-backend.onrender.com
       - key: NODE_ENV
         value: production
