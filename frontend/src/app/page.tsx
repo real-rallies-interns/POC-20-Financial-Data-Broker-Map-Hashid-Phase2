@@ -108,7 +108,8 @@ export default function FinancialDataBrokerMap() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/lineage');
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const response = await fetch(`${apiBase}/api/lineage`);
         if (!response.ok) throw new Error('API Error');
         const data = await response.json();
         const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(data);
