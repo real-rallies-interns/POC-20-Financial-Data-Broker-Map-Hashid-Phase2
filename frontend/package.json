@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm install @tailwindcss/postcss postcss --legacy-peer-deps && next build",
+    "prebuild": "npm install @tailwindcss/postcss postcss --legacy-peer-deps",
+    "build": "next build",
     "start": "next start -p ${PORT:-3000}",
     "lint": "eslint"
   },
