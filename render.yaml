@@ -17,11 +17,14 @@ services:
   # ─────────────────────────────────────────────
   # Frontend — Next.js / Node web service
   # ─────────────────────────────────────────────
+ # ─────────────────────────────────────────────
+  # Frontend — Next.js / Node web service
+  # ─────────────────────────────────────────────
   - type: web
     name: real-rails-frontend
     runtime: node
     rootDir: frontend
-    buildCommand: "npm install --legacy-peer-deps && npm run build"
+    buildCommand: npm install --legacy-peer-deps && npm run build
     startCommand: npm run start
     plan: free
     envVars:
