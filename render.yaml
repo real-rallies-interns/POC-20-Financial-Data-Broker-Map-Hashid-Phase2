@@ -20,6 +20,9 @@ services:
  # ─────────────────────────────────────────────
   # Frontend — Next.js / Node web service
   # ─────────────────────────────────────────────
+  # ─────────────────────────────────────────────
+  # Frontend — Next.js / Node web service
+  # ─────────────────────────────────────────────
   - type: web
     name: real-rails-frontend
     runtime: node
@@ -34,4 +37,6 @@ services:
         value: production
       - key: NPM_FLAGS
         value: --legacy-peer-deps
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=450
     healthCheckPath: /
