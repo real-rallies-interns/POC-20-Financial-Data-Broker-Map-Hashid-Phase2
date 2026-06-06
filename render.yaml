@@ -33,4 +33,6 @@ services:
         value: https://real-rails-backend.onrender.com
       - key: NODE_ENV
         value: production
+      - key: NPM_FLAGS
+        value: --legacy-peer-deps
     healthCheckPath: /
