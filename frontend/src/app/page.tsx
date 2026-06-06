@@ -12,7 +12,7 @@ import ReactFlow, {
   Position
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Shield, AlertTriangle, Download, Info, Database } from 'lucide-react';
+import { Shield, AlertTriangle, Download, Info, Database, Activity } from 'lucide-react';
 
 const MOCK_DATA = {
   nodes: [
@@ -41,33 +41,35 @@ const MOCK_DATA = {
 
 const CustomNode = ({ data }: any) => {
   return (
-    <div className={`px-4 py-2 shadow-lg rounded-md border backdrop-blur-md ${data.risk_level === 'High' ? 'border-red-500/50 bg-[#0B1117]/80 shadow-[0_0_10px_rgba(239,68,68,0.2)]' :
-      data.risk_level === 'Medium' ? 'border-yellow-500/50 bg-[#0B1117]/80' :
-        'border-[#1F2937] bg-[#0B1117]/80 hover:shadow-[0_0_10px_rgba(56,189,248,0.2)]'
-      } transition-all duration-300`}>
-      <Handle type="target" position={Position.Left} className="w-2 h-2 !bg-[#38BDF8]" />
+    <div className={`px-5 py-3 shadow-2xl rounded-xl border backdrop-blur-xl ${data.risk_level === 'High' ? 'border-red-500/40 bg-gradient-to-b from-[#110c0c] to-[#030712] shadow-[0_0_25px_rgba(239,68,68,0.15)]' :
+      data.risk_level === 'Medium' ? 'border-amber-500/40 bg-gradient-to-b from-[#14120c] to-[#030712] shadow-[0_0_25px_rgba(245,158,11,0.1)]' :
+        'border-blue-500/30 bg-gradient-to-b from-[#0c1017] to-[#030712] hover:shadow-[0_0_25px_rgba(56,189,248,0.15)]'
+      } transition-all duration-300 min-w-[150px]`}>
+      <Handle type="target" position={Position.Left} className="w-2.5 h-2.5 !bg-[#38BDF8] !border-none" />
       <div className="flex flex-col">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{data.type}</span>
-        <span className="text-sm font-semibold text-white">{data.label}</span>
+        <span className={`text-[9px] font-extrabold uppercase tracking-widest ${data.risk_level === 'High' ? 'text-red-400' :
+          data.risk_level === 'Medium' ? 'text-amber-400' :
+            'text-blue-400'
+          }`}>{data.type}</span>
+        <span className="text-sm font-bold text-gray-100 mt-0.5">{data.label}</span>
       </div>
-      <Handle type="source" position={Position.Right} className="w-2 h-2 !bg-[#38BDF8]" />
+      <Handle type="source" position={Position.Right} className="w-2.5 h-2.5 !bg-[#38BDF8] !border-none" />
     </div>
   );
 };
 
-
 const getLayoutedElements = (data: any) => {
   const positions: Record<string, { x: number, y: number }> = {
     'bank_wells': { x: 50, y: 0 },
-    'bank_chase': { x: 50, y: 100 },
-    'bank_citi': { x: 50, y: 200 },
-    'bank_bofa': { x: 50, y: 300 },
-    'agg_plaid': { x: 350, y: 100 },
-    'agg_yodlee': { x: 350, y: 300 },
-    'app_mint': { x: 700, y: 20 },
-    'broker_acxiom': { x: 700, y: 180 },
-    'app_robinhood': { x: 700, y: 280 },
-    'bureau_experian': { x: 700, y: 400 },
+    'bank_chase': { x: 50, y: 120 },
+    'bank_citi': { x: 50, y: 240 },
+    'bank_bofa': { x: 50, y: 360 },
+    'agg_plaid': { x: 380, y: 100 },
+    'agg_yodlee': { x: 380, y: 300 },
+    'app_mint': { x: 720, y: 20 },
+    'broker_acxiom': { x: 720, y: 180 },
+    'app_robinhood': { x: 720, y: 300 },
+    'bureau_experian': { x: 720, y: 420 },
   };
 
   const layoutedNodes = data.nodes.map((node: any) => ({
@@ -82,15 +84,19 @@ const getLayoutedElements = (data: any) => {
     source: edge.source,
     target: edge.target,
     label: edge.permission,
-    animated: edge.risk_level === 'High',
-    style: { stroke: edge.risk_level === 'High' ? '#ef4444' : '#38BDF8', strokeWidth: 2 },
-    labelStyle: { fill: '#818CF8', fontWeight: 600, fontSize: 11, letterSpacing: '0.5px' },
-    labelBgStyle: { fill: '#0B1117', fillOpacity: 0.9, stroke: '#1F2937' },
-    labelBgPadding: [4, 4],
-    labelBgBorderRadius: 4,
+    animated: edge.risk_level === 'High' || edge.risk_level === 'Medium',
+    style: {
+      stroke: edge.risk_level === 'High' ? '#ef4444' : edge.risk_level === 'Medium' ? '#f59e0b' : '#38BDF8',
+      strokeWidth: 2,
+      opacity: 0.8
+    },
+    labelStyle: { fill: '#94a3b8', fontWeight: 600, fontSize: 10, letterSpacing: '0.5px' },
+    labelBgStyle: { fill: '#030712', fillOpacity: 0.95, stroke: '#1f2937', strokeWidth: 1 },
+    labelBgPadding: [6, 4],
+    labelBgBorderRadius: 6,
     markerEnd: {
       type: MarkerType.ArrowClosed,
-      color: edge.risk_level === 'High' ? '#ef4444' : '#38BDF8',
+      color: edge.risk_level === 'High' ? '#ef4444' : edge.risk_level === 'Medium' ? '#f59e0b' : '#38BDF8',
     },
   }));
 
@@ -139,28 +145,27 @@ export default function FinancialDataBrokerMap() {
   }, []);
 
   return (
-    <div className="flex h-screen w-full bg-[#030712] text-white font-sans overflow-hidden">
+    <div className="flex h-screen w-full bg-[#030712] text-gray-100 font-sans overflow-hidden">
 
-      {/* MAIN STAGE (70%) */}
-      <div className="w-[70%] h-full relative border-r border-[#1F2937]">
-        {/* Header Overlay */}
+      <div className="w-[70%] h-full relative border-r border-gray-800/60">
+
         <div className="absolute top-0 left-0 w-full p-6 z-10 pointer-events-none flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              <Shield className="w-6 h-6 text-[#38BDF8]" />
-              Real Rails: Financial Data Broker Map
+          <div className="cinematic-card p-4 rounded-xl pointer-events-auto">
+            <h1 className="text-xl font-black tracking-wider bg-gradient-to-r from-blue-500 via-indigo-400 to-emerald-400 bg-clip-text text-transparent flex items-center gap-2.5">
+              <Shield className="w-5 h-5 text-blue-500" />
+              REAL RAILS
             </h1>
-            <p className="text-slate-400 text-sm mt-1">Tracking Financial Data Lineage & Permissions</p>
+            <p className="text-gray-400 text-[11px] mt-1 uppercase tracking-widest font-medium">Financial Data Broker Map // Phase 2</p>
           </div>
+
           <div className="pointer-events-auto">
-            <div className="flex items-center gap-2 bg-[#0B1117] border border-[#1F2937] px-3 py-1.5 rounded-full text-xs font-semibold">
-              <span className={`w-2 h-2 rounded-full ${dataSource === 'Live API' ? 'bg-green-500 animate-pulse' : 'bg-yellow-500'}`}></span>
-              <span className="text-slate-300">Data: {dataSource}</span>
+            <div className="flex items-center gap-2.5 cinematic-card px-4 py-2 rounded-xl text-xs font-bold tracking-wide">
+              <span className={`w-2 h-2 rounded-full ${dataSource === 'Live API' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
+              <span className="text-gray-300 uppercase font-mono">SYS_STATUS: {dataSource}</span>
             </div>
           </div>
         </div>
 
-        {/* Graph Area */}
         <div className="w-full h-full bg-[#030712]">
           {!isLoading && (
             <ReactFlow
@@ -174,116 +179,123 @@ export default function FinancialDataBrokerMap() {
               fitView
               className="bg-[#030712]"
             >
-              <Background color="#1F2937" gap={16} size={1} />
-              <Controls className="!bg-[#0B1117] !border-[#1F2937] !fill-slate-400" />
+              <Background color="#1f2937" gap={20} size={1} className="opacity-40" />
+              <Controls className="!bg-[#0b1117]/90 !border-gray-800 !fill-gray-400 !rounded-lg overflow-hidden shadow-2xl" />
             </ReactFlow>
           )}
         </div>
 
-        {/* Interactive Legend */}
-        <div className="absolute bottom-6 left-6 z-10 bg-[#0B1117]/80 backdrop-blur-md border border-[#1F2937] rounded-lg p-4 pointer-events-auto">
-          <h3 className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Risk Legend</h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-[#0B1117] border border-[#1F2937]"></div><span className="text-slate-300">Standard Node</span></div>
-            <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-yellow-950/50 border border-yellow-500/50"></div><span className="text-slate-300">Medium Risk (Aggregator)</span></div>
-            <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-red-950/50 border border-red-500/50"></div><span className="text-slate-300">High Risk (Reseller/Broker)</span></div>
+        <div className="absolute bottom-6 left-6 z-10 cinematic-card rounded-xl p-5 pointer-events-auto min-w-[200px]">
+          <h3 className="text-[10px] font-black text-gray-400 mb-3.5 uppercase tracking-widest border-b border-gray-800 pb-1.5">Risk Architecture</h3>
+          <div className="space-y-2.5 text-xs font-medium">
+            <div className="flex items-center gap-2.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-blue-500/20 border border-blue-500/50"></div>
+              <span className="text-gray-300">Standard Rail</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-amber-500/50"></div>
+              <span className="text-gray-300">Medium Risk Node</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50"></div>
+              <span className="text-gray-300">High Risk Reseller</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* INTELLIGENCE SIDEBAR (30%) */}
-      <div className="w-[30%] h-full bg-[#0B1117] flex flex-col relative overflow-hidden">
+      <div className="w-[30%] h-full bg-[#0b1117]/40 flex flex-col relative overflow-hidden backdrop-blur-md">
 
-        {/* Section A: Title & High-level Metric (Sticky Header) */}
-        <div className="p-6 pb-4 border-b border-[#1F2937] bg-[#0B1117] shrink-0 z-10 shadow-md">
-          <h2 className="text-xs font-bold text-[#38BDF8] mb-2 uppercase tracking-widest">Intelligence Summary</h2>
-          <div className="text-3xl font-light tracking-tight mb-2">Financial Data Broker Map</div>
-          <div className="flex items-end gap-3 mt-4">
-            <div className="text-5xl font-bold text-white">{nodes.length}</div>
-            <div className="text-sm text-slate-400 mb-1">Active Vendor Nodes in Lineage</div>
+        <div className="p-6 pb-5 border-b border-gray-800/60 bg-[#0b1117]/80 shrink-0 z-10 shadow-xl">
+          <h2 className="text-[10px] font-black text-blue-400 mb-1 uppercase tracking-widest flex items-center gap-1.5">
+            <Activity className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
+            SYSTEM_INTELLIGENCE
+          </h2>
+          <div className="text-2xl font-black tracking-tight text-gray-100">Lineage Metrics</div>
+          <div className="flex items-end gap-3 mt-4 bg-[#030712]/60 border border-gray-800/50 p-4 rounded-xl">
+            <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 font-mono tracking-tighter">{nodes.length}</div>
+            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Active Nodes Tracked</div>
           </div>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-6 flex flex-col">
+        <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
 
-          {/* Section B: "Why This Matters" */}
-          <div className="mb-8">
-            <h3 className="text-xs font-bold text-slate-400 mb-3 flex items-center gap-2">
-              <Info className="w-4 h-4 text-[#818CF8]" />
-              WHY THIS MATTERS
+          <div>
+            <h3 className="text-[10px] font-black text-gray-400 mb-2.5 flex items-center gap-2 uppercase tracking-widest">
+              <Info className="w-3.5 h-3.5 text-indigo-400" />
+              Operational Impact
             </h3>
-            <div className="bg-[#030712] rounded-lg p-4 border border-[#1F2937]">
-              <p className="text-sm text-slate-300 leading-relaxed">
+            <div className="bg-[#030712]/50 rounded-xl p-4 border border-gray-800/40">
+              <p className="text-xs text-gray-300 leading-relaxed font-medium">
                 Data is the New Collateral. If you lose control of your data, you lose control of your financial reputation.
                 Once consent is granted, data enters a complex web of Aggregators, Brokers, and Resellers. This "Data Sprawl" makes it nearly impossible to know who currently holds your sensitive financial history.
               </p>
             </div>
           </div>
 
-          {/* Section C: "Who Controls the Rail" */}
-          <div className="mb-8">
-            <h3 className="text-xs font-bold text-slate-400 mb-3 flex items-center gap-2">
-              <Database className="w-4 h-4 text-[#818CF8]" />
-              WHO CONTROLS THE RAIL
+          <div>
+            <h3 className="text-[10px] font-black text-gray-400 mb-2.5 flex items-center gap-2 uppercase tracking-widest">
+              <Database className="w-3.5 h-3.5 text-indigo-400" />
+              Governance Framework
             </h3>
-            <div className="bg-[#030712] rounded-lg p-4 border border-[#1F2937]">
-              <p className="text-sm text-slate-300 leading-relaxed">
+            <div className="bg-[#030712]/50 rounded-xl p-4 border border-gray-800/40">
+              <p className="text-xs text-gray-300 leading-relaxed font-medium">
                 The Consumer Financial Protection Bureau (CFPB), specifically through Section 1033 of the Dodd-Frank Act, and GDPR/DPDP frameworks govern data portability, permission chains, and the fundamental right to deletion.
               </p>
             </div>
           </div>
 
-          {/* Section D: Functional Filters / Selected Node Insights */}
-          <div className="mb-auto flex-1">
-            <h3 className="text-xs font-bold text-slate-400 mb-3 flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-[#818CF8]" />
-              NODE INSIGHTS
+          <div className="flex-1">
+            <h3 className="text-[10px] font-black text-gray-400 mb-2.5 flex items-center gap-2 uppercase tracking-widest">
+              <AlertTriangle className="w-3.5 h-3.5 text-indigo-400" />
+              Active Node Metadata
             </h3>
 
             {selectedNode ? (
-              <div className={`rounded-lg p-4 border ${selectedNode.risk_level === 'High' ? 'bg-red-950/10 border-red-500/30' : 'bg-[#030712] border-[#1F2937]'
+              <div className={`rounded-xl p-5 border transition-all duration-300 ${selectedNode.risk_level === 'High' ? 'bg-red-950/10 border-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.05)]' :
+                selectedNode.risk_level === 'Medium' ? 'bg-amber-950/10 border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.05)]' :
+                  'bg-[#030712]/60 border-gray-800/80 shadow-inner'
                 }`}>
-                <div className="flex justify-between items-start mb-3">
+                <div className="flex justify-between items-start border-b border-gray-800/60 pb-3">
                   <div>
-                    <h4 className="text-lg font-bold text-white">{selectedNode.label}</h4>
-                    <span className="text-xs text-[#38BDF8]">{selectedNode.type} Node</span>
+                    <h4 className="text-base font-black text-gray-100">{selectedNode.label}</h4>
+                    <span className="text-[11px] font-bold text-blue-400 uppercase tracking-wider">{selectedNode.type} Node</span>
                   </div>
-                  <span className={`px-2 py-1 text-[10px] font-bold rounded ${selectedNode.risk_level === 'High' ? 'bg-red-500/20 text-red-400' :
-                    selectedNode.risk_level === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-green-500/20 text-green-400'
+                  <span className={`px-2.5 py-1 text-[9px] font-black rounded-md tracking-wider ${selectedNode.risk_level === 'High' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
+                    selectedNode.risk_level === 'Medium' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                      'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                     }`}>
                     {selectedNode.risk_level} RISK
                   </span>
                 </div>
-                <div className="space-y-2 mt-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">Access Scope:</span>
-                    <span className="text-slate-300 font-medium text-right">
+
+                <div className="space-y-3 mt-4">
+                  <div className="flex justify-between text-xs font-medium">
+                    <span className="text-gray-500">Access Scope:</span>
+                    <span className="text-gray-300 font-bold text-right">
                       {selectedNode.type === 'Bank' ? 'Source of Truth' :
                         selectedNode.type === 'Broker' ? 'Anonymized Tracking' :
                           'Delegated Access'}
                     </span>
                   </div>
                   {selectedNode.risk_level === 'High' && (
-                    <div className="mt-4 text-xs text-red-400 bg-red-950/20 p-2 rounded border border-red-500/20">
+                    <div className="mt-4 text-[11px] font-semibold text-red-400 bg-red-950/20 p-3 rounded-lg border border-red-500/20 leading-relaxed animate-pulse">
                       Warning: Secondary consent required for data resale. Check GDPR compliance.
                     </div>
                   )}
                 </div>
               </div>
             ) : (
-              <div className="h-32 rounded-lg border border-dashed border-[#1F2937] flex items-center justify-center text-sm text-slate-500">
-                Select a node in the map to view lineage details.
+              <div className="h-32 rounded-xl border border-dashed border-gray-800 flex items-center justify-center p-4 text-center text-xs text-gray-500 font-medium">
+                Select an active telemetry node to inspect live ledger insights.
               </div>
             )}
           </div>
 
-          {/* Section E: Download Sample Data */}
-          <div className="mt-6 pt-6 border-t border-[#1F2937]">
-            <button className="w-full py-3 bg-[#1F2937] hover:bg-[#38BDF8] hover:text-[#030712] text-white rounded-md text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300">
+          <div className="mt-4 pt-4 border-t border-gray-800/60">
+            <button className="w-full py-3.5 bg-gray-800/80 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500 hover:text-white border border-gray-700/50 hover:border-none text-gray-200 rounded-xl text-xs font-black tracking-widest flex items-center justify-center gap-2 shadow-lg transition-all duration-300">
               <Download className="w-4 h-4" />
-              DOWNLOAD SAMPLE DATA
+              DOWNLOAD SYSTEM MANIFEST
             </button>
           </div>
 

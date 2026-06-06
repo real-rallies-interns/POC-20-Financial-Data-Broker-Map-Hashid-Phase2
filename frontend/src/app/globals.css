@@ -1,42 +1,38 @@
 @import "tailwindcss";
 
-:root {
-  --background: #030712;
-  --foreground: #ffffff;
+@layer base {
+  body {
+    background-color: #030712;
+    color: #f3f4f6;
+    font-family: 'Inter', sans-serif;
+  }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
+.cinematic-card {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s ease;
 }
 
-.react-flow__node {
-  border-radius: 8px;
+.cinematic-card:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
 }
 
-.react-flow__handle {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #38BDF8;
+.neon-text-green {
+  color: #10b981;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
-.react-flow__attribution {
-  display: none;
+.neon-text-blue {
+  color: #3b82f6;
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
 }
 
-/* Leaflet Customizations for Dark Theme */
-.leaflet-popup-content-wrapper,
-.leaflet-popup-tip {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.leaflet-popup-content {
-  margin: 0 !important;
-  line-height: inherit !important;
-}
-
-.custom-popup .leaflet-popup-content-wrapper {
-  padding: 0 !important;
+.cinematic-map {
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  overflow: hidden;
 }
