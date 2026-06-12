@@ -46,10 +46,10 @@ const CustomNode = ({ data }: any) => {
         'border-blue-500/40 bg-[#0b1117]/90 shadow-[0_0_20px_rgba(56,189,248,0.2)]'
       } transition-all duration-300 min-w-[150px] relative`}>
       
-      <div className={`absolute inset-0 rounded-xl opacity-50 ${data.risk_level === 'High' ? 'shadow-[inset_0_0_15px_rgba(239,68,68,0.4)]' :
+      <div className={`absolute inset-0 rounded-xl opacity-50 pointer-events-none ${data.risk_level === 'High' ? 'shadow-[inset_0_0_15px_rgba(239,68,68,0.4)]' :
         data.risk_level === 'Medium' ? 'shadow-[inset_0_0_15px_rgba(245,158,11,0.4)]' :
           'shadow-[inset_0_0_15px_rgba(56,189,248,0.4)]'
-        }`} pointer-events="none" />
+        }`} />
 
       <Handle type="target" position={Position.Left} className="w-2.5 h-2.5 !bg-[#38BDF8] !border-none shadow-[0_0_10px_#38BDF8]" />
       <div className="flex flex-col relative z-10">
@@ -173,7 +173,7 @@ export default function FinancialDataBrokerMap() {
           </div>
         </div>
 
-        <div className="w-full h-full bg-[#02040a]">
+        <div className="absolute inset-0 bg-[#02040a]">
           {!isLoading && (
             <ReactFlow
               nodes={nodes}
