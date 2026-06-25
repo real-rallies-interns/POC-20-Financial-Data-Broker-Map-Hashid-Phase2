@@ -235,6 +235,12 @@ export default function Dashboard() {
             The Consumer Financial Protection Bureau (CFPB), specifically through Section 1033 of the Dodd-Frank Act.
           </p>
         </div>
+
+        <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #1f2937' }}>
+          <p style={{ fontStyle: 'italic', fontSize: '11px', color: '#6b7280', margin: 0 }}>
+            Developed by: Muhammad Hashid E
+          </p>
+        </div>
       </div>
 
       {/* RIGHT CANVAS AREA */}
